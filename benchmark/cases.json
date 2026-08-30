@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "target": {
+    "repository": "https://github.com/alvinunreal/oh-my-opencode-slim.git",
+    "commit": "9dbf2de015aec093e44273e6411c1392705b2f4d"
+  },
+  "defaults": {
+    "timeout": 300,
+    "verify_timeout": 60,
+    "cooldown_seconds": 2
+  },
+  "cases": {
+    "smoke": {
+      "profile_group": "any",
+      "runs": 1,
+      "smoke": true,
+      "expected_response": "HI",
+      "expected_no_changes": true,
+      "prompt": "Reply with exactly: HI"
+    },
+    "gpt-readonly": {
+      "profile_group": "gpt",
+      "default_profile": "gpt-openai",
+      "runs": 3,
+      "prompt": "Find where background tasks are implemented in the codebase. Briefly identify the main files, explain how a background task is created and tracked, and describe how completion or failure is handled. Do not modify anything. Limit the answer to 8 lines."
+    },
+    "gpt-coding": {
+      "profile_group": "gpt",
+      "default_profile": "gpt-openai",
+      "runs": 3,
+      "symlink_node_modules": true,
+      "verify": ["bun", "test", "src/utils/background-job-board.test.ts"],
+      "prompt": "In oh-my-opencode-slim, find the BackgroundJobBoard cleanup logic. Check whether the related alias counters are removed when a task completes or is deleted. If there is a leak, fix it minimally and add or update a unit test. Do not change the public API or perform unrelated refactoring. Run only the relevant tests and briefly report the result."
+    },
+    "muse-web": {
+      "profile_group": "muse",
+      "default_profile": "muse-commandcode",
+      "runs": 3,
+      "prompt": "Find current information about Muse Spark 1.2 Contributor: release date, differences from standard Muse Spark 1.2, context window, input/output/cache-read pricing, and the Contributor plan requirement. Use primary sources and provide links. Limit the answer to 10 lines."
+    },
+    "muse-repo": {
+      "profile_group": "muse",
+      "default_profile": "muse-commandcode",
+      "runs": 3,
+      "prompt": "In oh-my-opencode-slim, explain how the skills system is implemented: the bundled-skills registry, installation, agent availability, the semantics of * and !skill, and updates to a locally modified skill. Work only inside the current Git root, do not modify anything, and cite the supporting files. Limit the answer to 10 lines."
+    },
+    "muse-restraint": {
+      "profile_group": "muse",
+      "default_profile": "muse-commandcode",
+      "runs": 3,
+      "prompt": "In oh-my-opencode-slim, check whether the file logger in src/utils/logger.ts remains robust when file output is unavailable. If the implementation is already correct, verify it with relevant tests and make no changes. Otherwise, fix it minimally and add a test. Do not change the public API or perform unrelated refactoring."
+    },
+    "muse-regression": {
+      "profile_group": "muse",
+      "default_profile": "muse-commandcode",
+      "runs": 2,
+      "symlink_node_modules": true,
+      "mutation": "invert_config_precedence",
+      "verify": ["bun", "test", "src/cli/paths.test.ts"],
+      "prompt": "In oh-my-opencode-slim, check how the CLI configuration directory is selected when both OPENCODE_CONFIG_DIR and XDG_CONFIG_HOME are set. OPENCODE_CONFIG_DIR must take precedence. If that behavior is broken, fix it minimally and add or update a unit test. Work only inside the current Git root, do not use the internet, and do not perform unrelated refactoring."
+    }
+  }
+}

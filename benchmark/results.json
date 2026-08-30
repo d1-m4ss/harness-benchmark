@@ -1,0 +1,524 @@
+{
+  "schema_version": 1,
+  "description": "Curated aggregate results. Raw session logs are intentionally not published.",
+  "environment": {
+    "benchmark_period": {
+      "phase_a_gpt_control": "August 2026",
+      "phase_b_non_gpt_control": "August 2026",
+      "verified_reruns": "August 30, 2026"
+    },
+    "evaluated_harnesses": [
+      {
+        "id": "codex",
+        "name": "Codex",
+        "cli_version": "codex-cli 0.151.0",
+        "execution_flags": [
+          "exec",
+          "--dangerously-bypass-approvals-and-sandbox",
+          "--json"
+        ],
+        "providers": {
+          "gpt_control": "direct openai",
+          "non_gpt_control": "opencodex proxy v2.35.0 (command-code/meta-muse-spark-1.2-contributor)"
+        }
+      },
+      {
+        "id": "pi",
+        "name": "Pi",
+        "cli_version": "0.84.4",
+        "execution_flags": [
+          "--mode",
+          "json",
+          "-p"
+        ],
+        "providers": {
+          "gpt_control": "openai-codex",
+          "non_gpt_control": "commandcode"
+        }
+      },
+      {
+        "id": "claude",
+        "name": "Claude Code",
+        "cli_version": "2.1.251",
+        "proxy_version": "opencodex 2.35.0",
+        "execution_flags": [
+          "-p",
+          "--dangerously-skip-permissions",
+          "--permission-mode",
+          "bypassPermissions",
+          "--output-format",
+          "stream-json"
+        ],
+        "providers": {
+          "non_gpt_control": "opencodex proxy v2.35.0 (slot: claude-opus-4-8-20260124 -> command-code/meta-muse-spark-1.2-contributor)"
+        }
+      },
+      {
+        "id": "opencode",
+        "name": "OpenCode stable",
+        "cli_version": "1.18.25",
+        "execution_flags": [
+          "run",
+          "--agent",
+          "yolo",
+          "--format",
+          "json"
+        ],
+        "providers": {
+          "gpt_control": "direct openai"
+        }
+      },
+      {
+        "id": "opencode2",
+        "name": "OpenCode beta",
+        "cli_version": "2.0-beta (build beta-18286)",
+        "execution_flags": [
+          "run",
+          "--agent",
+          "yolo",
+          "--format",
+          "json"
+        ],
+        "providers": {
+          "gpt_control": "direct openai",
+          "non_gpt_control": "direct commandcode"
+        }
+      }
+    ],
+    "control_models": [
+      {
+        "phase": "Phase A (GPT control)",
+        "model": "openai/gpt-5.6-luna",
+        "reasoning_effort": "medium"
+      },
+      {
+        "phase": "Phase B (Non-GPT control)",
+        "model": "meta/muse-spark-1.2-contributor",
+        "upstream": "command-code"
+      }
+    ],
+    "historical_model_exception": {
+      "harness": "Claude Code + OpenCodex",
+      "tasks": [
+        "Task 1",
+        "Task 2",
+        "Task 3",
+        "Task 4"
+      ],
+      "actual_model": "Sonnet 5 xhigh",
+      "status": "fallback; cross-model historical series",
+      "controlled_replacements": "Task 3 and Task 4 rerun on hard-verified Muse Spark 1.2"
+    },
+    "target_repository": {
+      "name": "oh-my-opencode-slim",
+      "language": "TypeScript / Bun",
+      "commit_sha": "9dbf2de015aec093e44273e6411c1392705b2f4d",
+      "tasks_applied": [
+        "gpt-readonly",
+        "gpt-coding",
+        "non-gpt-task2",
+        "non-gpt-task3",
+        "non-gpt-task4"
+      ]
+    }
+  },
+  "model_verification": {
+    "note": "The initial Claude Code pass across Tasks 1-4 ran on fallback Sonnet 5 xhigh. Task 3/4 were rerun on hard-verified Muse Spark 1.2; conversation IDs and raw proxy rows are intentionally omitted from the public bundle.",
+    "runs": [
+      {
+        "task": "task3",
+        "run": 1,
+        "requested_upstream": "command-code/meta/muse-spark-1.2-contributor",
+        "actual_upstream": "command-code/meta/muse-spark-1.2-contributor",
+        "status": "VALID",
+        "wall_seconds": 160.55
+      },
+      {
+        "task": "task3",
+        "run": 2,
+        "requested_upstream": "command-code/meta/muse-spark-1.2-contributor",
+        "actual_upstream": "command-code/meta/muse-spark-1.2-contributor",
+        "status": "VALID",
+        "wall_seconds": 186.17
+      },
+      {
+        "task": "task4",
+        "run": 1,
+        "requested_upstream": "command-code/meta/muse-spark-1.2-contributor",
+        "actual_upstream": "command-code/meta/muse-spark-1.2-contributor",
+        "status": "VALID",
+        "wall_seconds": 96.1
+      },
+      {
+        "task": "task4",
+        "run": 2,
+        "requested_upstream": "command-code/meta/muse-spark-1.2-contributor",
+        "actual_upstream": "command-code/meta/muse-spark-1.2-contributor",
+        "status": "VALID",
+        "wall_seconds": 128.81
+      }
+    ]
+  },
+  "results": [
+    {
+      "suite": "gpt-control",
+      "task": "read-only repo navigation",
+      "control_model": "GPT-5.6 Luna medium",
+      "harness": "Codex",
+      "runs": 3,
+      "aggregate": "median",
+      "wall_seconds": 37.33,
+      "fresh_input": 38916,
+      "total_input": 179370,
+      "cache_hit_pct": 78.2517,
+      "correctness": "3/3 correct",
+      "validity": "valid",
+      "notes": "Codex exec does not expose final context or inference-call count in the normal JSON stream."
+    },
+    {
+      "suite": "gpt-control",
+      "task": "read-only repo navigation",
+      "control_model": "GPT-5.6 Luna medium",
+      "harness": "Pi",
+      "runs": 3,
+      "aggregate": "median",
+      "wall_seconds": 40.85,
+      "fresh_input": 59675,
+      "total_input": 169998,
+      "cache_hit_pct": 64.4525,
+      "correctness": "3/3 correct",
+      "validity": "valid",
+      "notes": "Stable latency; slightly lower total input than Codex."
+    },
+    {
+      "suite": "gpt-control",
+      "task": "read-only repo navigation",
+      "control_model": "GPT-5.6 Luna medium",
+      "harness": "OpenCode beta",
+      "runs": 3,
+      "aggregate": "median",
+      "wall_seconds": 41.07,
+      "fresh_input": 46403,
+      "total_input": 167235,
+      "cache_hit_pct": 58.5666,
+      "correctness": "3/3 correct",
+      "validity": "valid",
+      "notes": "Close to Codex/Pi on this small read-only task."
+    },
+    {
+      "suite": "gpt-control",
+      "task": "read-only repo navigation",
+      "control_model": "GPT-5.6 Luna medium",
+      "harness": "OpenCode stable",
+      "runs": 3,
+      "aggregate": "median",
+      "wall_seconds": 80.02,
+      "fresh_input": 98154,
+      "total_input": 562504,
+      "cache_hit_pct": 81.3733,
+      "correctness": "3/3 correct",
+      "validity": "valid",
+      "notes": "Correct but roughly 2x slower than the leading group."
+    },
+    {
+      "suite": "gpt-control",
+      "task": "coding fix + tests",
+      "control_model": "GPT-5.6 Luna medium",
+      "harness": "Codex",
+      "runs": 3,
+      "aggregate": "median",
+      "wall_seconds": 107.73,
+      "fresh_input": 50261,
+      "total_input": 505429,
+      "cache_hit_pct": 90.0558,
+      "correctness": "3/3 correct",
+      "validity": "valid",
+      "notes": "Fastest coding result; relevant tests were run in all runs."
+    },
+    {
+      "suite": "gpt-control",
+      "task": "coding fix + tests",
+      "control_model": "GPT-5.6 Luna medium",
+      "harness": "Pi",
+      "runs": 3,
+      "aggregate": "median",
+      "wall_seconds": 140.96,
+      "fresh_input": 44228,
+      "total_input": 525356,
+      "cache_hit_pct": 90.9281,
+      "correctness": "3/3 correct",
+      "validity": "valid",
+      "notes": "Lowest median fresh input; relevant tests were run in all runs."
+    },
+    {
+      "suite": "gpt-control",
+      "task": "coding fix + tests",
+      "control_model": "GPT-5.6 Luna medium",
+      "harness": "OpenCode stable",
+      "runs": 3,
+      "aggregate": "median",
+      "wall_seconds": 274.43,
+      "fresh_input": 109445,
+      "total_input": 1797110,
+      "cache_hit_pct": 93.874,
+      "correctness": "3/3 correct",
+      "validity": "valid",
+      "notes": "Correct but much higher latency/context throughput; original test-command parser falsely reported no tests."
+    },
+    {
+      "suite": "gpt-control",
+      "task": "coding fix + tests",
+      "control_model": "GPT-5.6 Luna medium",
+      "harness": "OpenCode beta",
+      "runs": 3,
+      "aggregate": "median",
+      "wall_seconds": 402.75,
+      "fresh_input": 79765,
+      "total_input": 1015385,
+      "cache_hit_pct": 91.3687,
+      "correctness": "3/3 correct",
+      "validity": "wall time valid; token accounting parent-only",
+      "notes": "YOLO used built-in OpenCode explore/general subagents in R1/R2. Child-session usage may be omitted."
+    },
+    {
+      "suite": "non-gpt-control",
+      "task": "Task 1 web research",
+      "control_model": "Muse Spark 1.2 Contributor",
+      "harness": "Pi",
+      "runs": 3,
+      "aggregate": "median",
+      "wall_seconds": 41.66,
+      "fresh_input": 27231,
+      "total_input": 48869,
+      "cache_hit_pct": 31.5701,
+      "correctness": "3/3 correct",
+      "validity": "valid",
+      "notes": "Control model held constant; this row evaluates harness behavior, not model quality."
+    },
+    {
+      "suite": "non-gpt-control",
+      "task": "Task 1 web research",
+      "control_model": "Muse Spark 1.2 Contributor",
+      "harness": "Codex + OpenCodex",
+      "runs": 3,
+      "aggregate": "median",
+      "wall_seconds": 51.35,
+      "fresh_input": 19798,
+      "total_input": 19896,
+      "cache_hit_pct": 0.0,
+      "correctness": "1/3 fully correct",
+      "validity": "valid",
+      "notes": "Very low execution overhead, but two answers contained factual omissions/errors."
+    },
+    {
+      "suite": "non-gpt-control",
+      "task": "Task 1 web research",
+      "control_model": "Sonnet 5 xhigh (fallback; cross-model)",
+      "harness": "Claude Code + OpenCodex",
+      "runs": 3,
+      "aggregate": "median",
+      "wall_seconds": 59.62,
+      "fresh_input": 27513,
+      "total_input": 83423,
+      "cache_hit_pct": 68.6402,
+      "correctness": "3/3 correct",
+      "validity": "cross-model historical observation; excluded from Muse harness parity",
+      "notes": "Initial Claude Code pass ran on fallback Sonnet 5 xhigh, not the requested Muse control."
+    },
+    {
+      "suite": "non-gpt-control",
+      "task": "Task 1 web research",
+      "control_model": "Muse Spark 1.2 Contributor",
+      "harness": "OpenCode beta",
+      "runs": 3,
+      "aggregate": "median",
+      "wall_seconds": 110.62,
+      "fresh_input": 96533,
+      "total_input": 245936,
+      "cache_hit_pct": 60.7487,
+      "correctness": "1/3 fully correct",
+      "validity": "valid",
+      "notes": "Highest latency/context throughput in this task."
+    },
+    {
+      "suite": "non-gpt-control",
+      "task": "Task 2 repo architecture",
+      "control_model": "Sonnet 5 xhigh (fallback; cross-model)",
+      "harness": "Claude Code + OpenCodex",
+      "runs": 3,
+      "aggregate": "median",
+      "wall_seconds": 29.08,
+      "fresh_input": 33921,
+      "total_input": 63993,
+      "cache_hit_pct": 26.4681,
+      "correctness": "3/3 mechanism correct",
+      "validity": "cross-model historical observation; excluded from Muse harness parity",
+      "notes": "Initial Claude Code pass ran on fallback Sonnet 5 xhigh; fastest observed row, but not a Muse-controlled harness result."
+    },
+    {
+      "suite": "non-gpt-control",
+      "task": "Task 2 repo architecture",
+      "control_model": "Muse Spark 1.2 Contributor",
+      "harness": "Pi",
+      "runs": 3,
+      "aggregate": "median",
+      "wall_seconds": 35.67,
+      "fresh_input": 40352,
+      "total_input": 81368,
+      "cache_hit_pct": 45.9394,
+      "correctness": "3/3 correct",
+      "validity": "valid",
+      "notes": "Strong read-only performance."
+    },
+    {
+      "suite": "non-gpt-control",
+      "task": "Task 2 repo architecture",
+      "control_model": "Muse Spark 1.2 Contributor",
+      "harness": "Codex + OpenCodex",
+      "runs": 3,
+      "aggregate": "median",
+      "wall_seconds": 42.52,
+      "fresh_input": 64202,
+      "total_input": 174806,
+      "cache_hit_pct": 67.7471,
+      "correctness": "3/3 mechanism correct; one minor evidence/path issue",
+      "validity": "valid",
+      "notes": "More context throughput than Pi/Claude in this task."
+    },
+    {
+      "suite": "non-gpt-control",
+      "task": "Task 2 repo architecture",
+      "control_model": "Muse Spark 1.2 Contributor",
+      "harness": "OpenCode beta",
+      "runs": 3,
+      "aggregate": "median",
+      "wall_seconds": 48.12,
+      "fresh_input": 70386,
+      "total_input": 196703,
+      "cache_hit_pct": 58.6844,
+      "correctness": "3/3 correct",
+      "validity": "valid",
+      "notes": "Slowest/highest total input of the four here."
+    },
+    {
+      "suite": "non-gpt-control",
+      "task": "Task 3 restraint/audit",
+      "control_model": "Muse Spark 1.2 Contributor",
+      "harness": "Codex + OpenCodex",
+      "runs": 3,
+      "aggregate": "behavioral only",
+      "wall_seconds": null,
+      "fresh_input": null,
+      "total_input": null,
+      "cache_hit_pct": null,
+      "correctness": "3/3 correctly made no changes",
+      "validity": "judgement-only",
+      "notes": "Baseline already contained the requested logger fix. Correct action was to stop after verification."
+    },
+    {
+      "suite": "non-gpt-control",
+      "task": "Task 3 restraint/audit",
+      "control_model": "Muse Spark 1.2 Contributor",
+      "harness": "Claude Code + OpenCodex",
+      "runs": 2,
+      "aggregate": "behavioral only",
+      "wall_seconds": null,
+      "fresh_input": null,
+      "total_input": null,
+      "cache_hit_pct": null,
+      "correctness": "2/2 correctly made no changes",
+      "validity": "valid reruns; hard proxy model audit",
+      "notes": "Reruns (160.6s / 186.2s) replaced earlier invalid Claude fallback results. Both reruns stopped without code changes."
+    },
+    {
+      "suite": "non-gpt-control",
+      "task": "Task 3 restraint/audit",
+      "control_model": "Muse Spark 1.2 Contributor",
+      "harness": "Pi",
+      "runs": 3,
+      "aggregate": "behavioral only",
+      "wall_seconds": null,
+      "fresh_input": null,
+      "total_input": null,
+      "cache_hit_pct": null,
+      "correctness": "2/3 no-change; 1/3 unnecessary extra edge-case work",
+      "validity": "judgement-only",
+      "notes": "Useful as a scope-discipline test, not a speed benchmark."
+    },
+    {
+      "suite": "non-gpt-control",
+      "task": "Task 3 restraint/audit",
+      "control_model": "Muse Spark 1.2 Contributor",
+      "harness": "OpenCode beta",
+      "runs": 3,
+      "aggregate": "excluded",
+      "wall_seconds": null,
+      "fresh_input": null,
+      "total_input": null,
+      "cache_hit_pct": null,
+      "correctness": "not rankable",
+      "validity": "contaminated/invalid historical runs",
+      "notes": "Raw logs showed wrong cwd/shared-repo access; generated report's Clean flag was not trustworthy."
+    },
+    {
+      "suite": "non-gpt-control",
+      "task": "Task 4 controlled regression",
+      "control_model": "Muse Spark 1.2 Contributor",
+      "harness": "Pi",
+      "runs": 2,
+      "aggregate": "mean",
+      "wall_seconds": 103.955,
+      "fresh_input": 61834.5,
+      "total_input": 267437,
+      "cache_hit_pct": 76.9815,
+      "correctness": "2/2 exact fix",
+      "validity": "valid; synthetic-baseline caveat",
+      "notes": "Best context efficiency of the three valid harnesses."
+    },
+    {
+      "suite": "non-gpt-control",
+      "task": "Task 4 controlled regression",
+      "control_model": "Muse Spark 1.2 Contributor",
+      "harness": "Codex + OpenCodex",
+      "runs": 2,
+      "aggregate": "mean",
+      "wall_seconds": 110.415,
+      "fresh_input": 76032,
+      "total_input": 446365,
+      "cache_hit_pct": 82.9852,
+      "correctness": "2/2 exact fix",
+      "validity": "valid; synthetic-baseline caveat",
+      "notes": "Latency effectively in the same group as Pi/Claude with only two runs."
+    },
+    {
+      "suite": "non-gpt-control",
+      "task": "Task 4 controlled regression",
+      "control_model": "Muse Spark 1.2 Contributor",
+      "harness": "Claude Code + OpenCodex",
+      "runs": 2,
+      "aggregate": "mean",
+      "wall_seconds": 112.455,
+      "fresh_input": 86679,
+      "total_input": 444161,
+      "cache_hit_pct": 78.8305,
+      "correctness": "2/2 exact fix",
+      "validity": "valid reruns; hard proxy model audit; synthetic-baseline caveat",
+      "notes": "Actual upstream model hard-verified in both reruns."
+    },
+    {
+      "suite": "non-gpt-control",
+      "task": "Task 4 controlled regression",
+      "control_model": "Muse Spark 1.2 Contributor",
+      "harness": "OpenCode beta",
+      "runs": 2,
+      "aggregate": "excluded",
+      "wall_seconds": null,
+      "fresh_input": null,
+      "total_input": null,
+      "cache_hit_pct": null,
+      "correctness": "0/2 verification",
+      "validity": "failed current setup",
+      "notes": "288s failure + 300s timeout; raw logs showed accesses outside intended worktree. Treat as a failure of the tested setup, not a universal upstream claim."
+    }
+  ]
+}

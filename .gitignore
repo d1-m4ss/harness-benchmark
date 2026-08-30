@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+.venv/
+venv/
+runs/
+benchmark/providers.local.json
+*.routing.json
+*.stderr
+*.patch

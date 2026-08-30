@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "gpt-openai": {
+      "description": "GPT-5.6 Luna control through the routes used in the published GPT series.",
+      "group": "gpt",
+      "control_model": "gpt-5.6-luna",
+      "pricing_per_million_usd": {
+        "fresh_input": 1.25,
+        "cache_read": 0.15,
+        "output": 5.0,
+        "basis": "benchmark-period list-price assumption"
+      },
+      "harnesses": {
+        "codex": {
+          "name": "Codex",
+          "format": "codex",
+          "provider": "openai",
+          "model": "gpt-5.6-luna",
+          "cli_model": "gpt-5.6-luna",
+          "command": ["codex", "exec", "--model", "{cli_model}", "-c", "model_reasoning_effort=\"medium\"", "--dangerously-bypass-approvals-and-sandbox", "--json", "{prompt}"],
+          "requested_model": "gpt-5.6-luna",
+          "expected_model_regex": "(?:^|/)gpt-5\\.6-luna$"
+        },
+        "pi": {
+          "name": "Pi",
+          "format": "pi",
+          "provider": "openai-codex",
+          "model": "gpt-5.6-luna",
+          "cli_model": "gpt-5.6-luna",
+          "command": ["pi", "--provider", "{provider}", "--model", "{cli_model}", "--thinking", "medium", "--mode", "json", "-p", "{prompt}"],
+          "requested_model": "openai-codex/gpt-5.6-luna",
+          "expected_model_regex": "(?:^|/)gpt-5\\.6-luna$"
+        },
+        "opencode": {
+          "name": "OpenCode stable",
+          "format": "opencode",
+          "provider": "openai",
+          "model": "gpt-5.6-luna",
+          "cli_model": "openai/gpt-5.6-luna",
+          "command": ["opencode", "run", "--auto", "--agent", "yolo", "--model", "{cli_model}", "--format", "json", "{prompt}"],
+          "requested_model": "openai/gpt-5.6-luna",
+          "expected_model_regex": "(?:^|/)gpt-5\\.6-luna$"
+        },
+        "opencode2": {
+          "name": "OpenCode beta",
+          "format": "opencode2",
+          "provider": "openai",
+          "model": "gpt-5.6-luna",
+          "cli_model": "openai/gpt-5.6-luna",
+          "command": ["opencode2", "run", "--auto", "--agent", "yolo", "--model", "{cli_model}", "--format", "json", "{prompt}"],
+          "requested_model": "openai/gpt-5.6-luna",
+          "expected_model_regex": "(?:^|/)gpt-5\\.6-luna$"
+        }
+      }
+    },
+    "muse-commandcode": {
+      "description": "Muse Spark 1.2 Contributor through CommandCode, matching the published Muse series.",
+      "group": "muse",
+      "control_model": "meta/muse-spark-1.2-contributor",
+      "pricing_per_million_usd": {
+        "fresh_input": 0.1,
+        "cache_read": 0.002,
+        "output": 0.2,
+        "basis": "CommandCode Contributor tariff"
+      },
+      "harnesses": {
+        "pi": {
+          "name": "Pi",
+          "format": "pi",
+          "provider": "commandcode",
+          "model": "meta/muse-spark-1.2-contributor",
+          "cli_model": "meta/muse-spark-1.2-contributor",
+          "command": ["pi", "--provider", "{provider}", "--model", "{cli_model}", "--mode", "json", "-p", "{prompt}"],
+          "requested_model": "commandcode/meta/muse-spark-1.2-contributor",
+          "expected_model_regex": "(?:^|/)meta/muse-spark-1\\.2-contributor$"
+        },
+        "codex": {
+          "name": "Codex + OpenCodex",
+          "format": "codex",
+          "provider": "command-code",
+          "model": "meta/muse-spark-1.2-contributor",
+          "cli_model": "command-code/meta-muse-spark-1.2-contributor",
+          "command": ["codex", "exec", "--model", "{cli_model}", "--dangerously-bypass-approvals-and-sandbox", "--json", "{prompt}"],
+          "requested_model": "command-code/meta-muse-spark-1.2-contributor",
+          "routing": {
+            "requested_model": "command-code/meta-muse-spark-1.2-contributor",
+            "provider": "command-code",
+            "model": "meta/muse-spark-1.2-contributor"
+          }
+        },
+        "claude": {
+          "name": "Claude Code + OpenCodex",
+          "format": "claude",
+          "provider": "command-code",
+          "model": "meta/muse-spark-1.2-contributor",
+          "cli_model": "claude-opus-4-8-20260124",
+          "command": ["ocx", "claude", "-p", "--dangerously-skip-permissions", "--permission-mode", "bypassPermissions", "--tools", "Bash,Edit,Read,Write,Glob,Grep", "--output-format", "stream-json", "--model", "{cli_model}", "{prompt}"],
+          "requested_model": "claude-opus-4-8-20260124 (OpenCodex slot)",
+          "unset_env": ["ANTHROPIC_API_KEY", "ANTHROPIC_BASE_URL", "ANTHROPIC_AUTH_TOKEN"],
+          "routing": {
+            "requested_model": "command-code/meta/muse-spark-1.2-contributor",
+            "provider": "command-code",
+            "model": "meta/muse-spark-1.2-contributor"
+          }
+        },
+        "opencode2": {
+          "name": "OpenCode beta",
+          "format": "opencode2",
+          "provider": "commandcode",
+          "model": "meta/muse-spark-1.2-contributor",
+          "cli_model": "commandcode/meta/muse-spark-1.2-contributor",
+          "command": ["opencode2", "run", "--auto", "--agent", "yolo", "--model", "{cli_model}", "--format", "json", "{prompt}"],
+          "requested_model": "commandcode/meta/muse-spark-1.2-contributor",
+          "expected_model_regex": "(?:^|/)meta/muse-spark-1\\.2-contributor$"
+        }
+      }
+    }
+  }
+}
