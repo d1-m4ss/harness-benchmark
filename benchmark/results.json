@@ -473,7 +473,7 @@
       "cache_hit_pct": 76.9815,
       "correctness": "2/2 exact fix",
       "validity": "valid; synthetic-baseline caveat",
-      "notes": "Best context efficiency of the three valid harnesses."
+      "notes": "Lowest cumulative context throughput of the three valid harnesses."
     },
     {
       "suite": "non-gpt-control",

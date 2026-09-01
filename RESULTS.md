@@ -143,4 +143,7 @@ ineligible for the strict Muse harness comparison.
 > **Key Finding on Parity & Efficiency (Task 4, n=2):**<br>
 > Across 2 evaluated runs (n=2) under strictly verified model weights and prompts:
 > 1. **Latency:** Pi, Codex, and Claude Code form a single tight latency group (**104s / 110s / 112s**), all producing the identical valid +6 line repair.
-> 2. **Context Throughput:** **Pi required ~40% less total context throughput (267.4k vs ~445k)** due to leaner context assembly and compaction cycles.
+> 2. **Cumulative Context Throughput:** **Pi required ~40% less cumulative context throughput (267.4k vs ~445k total input)** across all inference cycles.
+>    * Pi: 11 model calls (289.6k total input) in run 1; 12 model calls (245.3k total input) in run 2.
+>    * Claude Code: 13 model calls (365.2k total input) in run 1; 12 model calls (523.2k total input) in run 2.
+>    * In run 2, both Pi and Claude Code made exactly 12 model calls while Claude processed ~2.1x cumulative input. Turn count alone does not explain the difference, but the metric is precisely **cumulative context throughput**, not standalone proof of "better context management".

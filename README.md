@@ -41,7 +41,7 @@ Tasks 3 and 4 were later rerun with requested, actual, and proxy model verificat
 ## What we concluded
 
 - The same model in different harnesses produced materially different execution graphs and context throughput.
-- Pi moved about 40% less total input than Codex and Claude in the controlled Task 4 runs while producing the same fix.
+- Pi processed about 40% less cumulative input than Codex and Claude in the controlled Task 4 runs while producing the same fix (cumulative context throughput, not explained by turn count alone where both Pi and Claude had 12 model calls in run 2).
 - Codex and Claude showed strong scope restraint. Task 3 was specifically a restraint test because the requested logger defect was already fixed.
 - Pi, Codex, and Claude had similar Task 4 latency at this sample size.
 - OpenCode stable was substantially less efficient in the GPT coding task.
